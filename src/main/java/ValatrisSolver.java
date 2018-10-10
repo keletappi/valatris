@@ -1,10 +1,12 @@
 import board.Board;
 import board.CoordinateTransformation;
 import board.Piece;
+import parser.PieceReader;
 import renderer.AsciiBoardRenderer;
 import renderer.PlacementCoordinatesRenderer;
 import solver.PlaceAllPiecesBruteForce;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,39 +17,24 @@ public class ValatrisSolver {
 
     public static void main(String[] args) {
         var board = new Board(4, 4);
-        var pieces = List.of(
-                new Piece("L",
-                        new CoordinateTransformation(0,0),
-                        new CoordinateTransformation(1,0),
-                        new CoordinateTransformation(0,1)
-                ),
-                new Piece(
-                        "T",
-                        new CoordinateTransformation(0,-1),
-                        new CoordinateTransformation(0,0),
-                        new CoordinateTransformation(1,0),
-                        new CoordinateTransformation(-1,0)
-                ),
-                new Piece(
-                        "I",
-                        new CoordinateTransformation(0,0),
-                        new CoordinateTransformation(0,1),
-                        new CoordinateTransformation(0,2)
-                )
-        );
-        var solutionStrategy = new PlaceAllPiecesBruteForce();
 
-
-        if (solutionStrategy.solve(board, pieces)) {
-            try {
-                new PlacementCoordinatesRenderer().render(board, System.out);
-                System.out.println("");
-                new AsciiBoardRenderer().render(board, System.out);
-                System.out.println("");
-            } catch (IOException e) {
-                System.out.println("Failed to render solution: " + e.getMessage());
-                e.printStackTrace();
+        try {
+            var pieces = new PieceReader().readPieces(new File("palikkatiedosto.txt"));
+            var solutionStrategy = new PlaceAllPiecesBruteForce();
+            boolean foundSolution = solutionStrategy.solve(board, pieces);
+            if (foundSolution) {
+                try {
+                    new PlacementCoordinatesRenderer().render(board, System.out);
+                    System.out.println("");
+                    new AsciiBoardRenderer().render(board, System.out);
+                    System.out.println("");
+                } catch (IOException e) {
+                    System.out.println("Failed to render solution: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }

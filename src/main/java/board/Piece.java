@@ -9,8 +9,12 @@ public class Piece {
     private final List<CoordinateTransformation> pieceTransformations;
 
     public Piece(@Nonnull String label, @Nonnull CoordinateTransformation ... pieceTransformations) {
+        this(label, List.of(pieceTransformations));
+    }
+
+    public Piece(@Nonnull String label, @Nonnull List<CoordinateTransformation> pieceTransformations) {
         this.label = label;
-        this.pieceTransformations = List.of(pieceTransformations);
+        this.pieceTransformations = pieceTransformations;
     }
 
     public List<Coordinate> absoluteCoordinates(@Nonnull Coordinate center) {
@@ -21,5 +25,12 @@ public class Piece {
 
     public String getLabel() {
         return label;
+    }
+
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "label='" + label + '\'' +
+                '}';
     }
 }
