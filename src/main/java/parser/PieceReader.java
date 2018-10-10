@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import static java.util.function.Predicate.not;
+import static com.google.common.base.Predicates.not;
 
 public class PieceReader {
 
