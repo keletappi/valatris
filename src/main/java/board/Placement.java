@@ -18,4 +18,16 @@ public class Placement {
     public List<Coordinate> coordinates() {
         return piece.absoluteCoordinates(location);
     }
+
+    public int getX() {
+        return location.getX();
+    }
+
+    public int getY() {
+        return location.getY();
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
 }

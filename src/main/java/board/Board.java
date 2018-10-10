@@ -1,9 +1,8 @@
 package board;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -74,4 +73,24 @@ public class Board {
         return result.stream().filter(not(this::overlapsExistingPlacements)).collect(Collectors.toList());
     }
 
+    public Set<Placement> getPlacements() {
+        return new HashSet<>(placements);
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Piece getPieceAt(int x, int y) {
+        final Coordinate slot = new Coordinate(x, y);
+        return placements.stream()
+                .filter(p -> p.coordinates().contains(slot))
+                .map(Placement::getPiece)
+                .findAny()
+                .orElse(null);
+    }
 }

@@ -1,8 +1,11 @@
 import board.Board;
 import board.CoordinateTransformation;
 import board.Piece;
+import renderer.AsciiBoardRenderer;
+import renderer.PlacementCoordinatesRenderer;
 import solver.PlaceAllPiecesBruteForce;
 
+import java.io.IOException;
 import java.util.List;
 
 /*
@@ -20,10 +23,10 @@ public class ValatrisSolver {
                 ),
                 new Piece(
                         "T",
-                        new CoordinateTransformation(-1,0),
+                        new CoordinateTransformation(0,-1),
                         new CoordinateTransformation(0,0),
                         new CoordinateTransformation(1,0),
-                        new CoordinateTransformation(0,1)
+                        new CoordinateTransformation(-1,0)
                 ),
                 new Piece(
                         "I",
@@ -32,11 +35,20 @@ public class ValatrisSolver {
                         new CoordinateTransformation(0,2)
                 )
         );
-
         var solutionStrategy = new PlaceAllPiecesBruteForce();
-        var foundSolution = solutionStrategy.solve(board, pieces);
 
-        System.out.println("Found solution? " + foundSolution);
+
+        if (solutionStrategy.solve(board, pieces)) {
+            try {
+                new PlacementCoordinatesRenderer().render(board, System.out);
+                System.out.println("");
+                new AsciiBoardRenderer().render(board, System.out);
+                System.out.println("");
+            } catch (IOException e) {
+                System.out.println("Failed to render solution: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 
     }
 }
