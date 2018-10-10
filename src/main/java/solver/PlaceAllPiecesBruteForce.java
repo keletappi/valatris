@@ -4,8 +4,10 @@ import board.Board;
 import board.Coordinate;
 import board.Piece;
 import board.Placement;
+import renderer.AsciiBoardRenderer;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.List;
 
 public class PlaceAllPiecesBruteForce implements SolutionStrategy {
@@ -26,15 +28,22 @@ public class PlaceAllPiecesBruteForce implements SolutionStrategy {
         var slots = board.getFreeSlots();
         for (Coordinate slot : slots) {
             Placement placement = new Placement(piece, slot);
+
             if (board.apply(placement)) {
                 if (remainingPieces.isEmpty()) {
                     return true;
                 } else {
-                    return findPlacement(board, remainingPieces.get(0), remainingPieces.subList(1, remainingPieces.size()));
+                    if (findPlacement(board,
+                            remainingPieces.get(0),
+                            remainingPieces.subList(1, remainingPieces.size()))) {
+                        return true;
+                    } else {
+                        board.undo();
+                    }
                 }
             }
         }
-        board.undo();
+
         return false;
     }
 
