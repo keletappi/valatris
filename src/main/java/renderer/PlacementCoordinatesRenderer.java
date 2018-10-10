@@ -13,12 +13,15 @@ public class PlacementCoordinatesRenderer implements BoardRenderer {
     public void render(@Nonnull Board board, @Nonnull OutputStream outputStream) throws IOException {
         var writer = new OutputStreamWriter(outputStream);
         StringBuilder builder = new StringBuilder();
-        board.getPlacements().forEach(placement -> builder.append(format(placement)).append('\n'));
+        board.getPlacements().forEach(placement -> builder.append(placement.getPiece().getLabel())
+                .append(':')
+                .append(format(placement))
+                .append('\n'));
         writer.write(builder.toString());
         writer.flush();
     }
 
     private String format(Placement placement) {
-        return String.format("<%d,%d>", placement.getX(), placement.getY());
+        return String.format("%d,%d", placement.getX(), placement.getY());
     }
 }
