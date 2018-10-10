@@ -1,7 +1,11 @@
 package board;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static java.util.function.Predicate.not;
 
@@ -10,7 +14,7 @@ public class Board {
     private final int width;
     private final int height;
 
-    private Stack<Placement> placements;
+    private final Stack<Placement> placements;
 
     /**
      * Creates a new empty board.
@@ -20,7 +24,7 @@ public class Board {
     public Board(int width, int height) {
         this.width = width;
         this.height = height;
-        placements = new Stack<>();
+        this.placements = new Stack<>();
     }
 
     /**
@@ -28,13 +32,20 @@ public class Board {
      * @param placement Placement to try out
      * @return true if placement is successful, false if not.
      */
-    public boolean apply(Placement placement) {
+    public boolean apply(@Nonnull Placement placement) {
         if (isValidPlacement(placement)) {
             placements.push(placement);
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Undo most recent successfully applied piece placement.
+     */
+    public void undo() {
+        placements.pop();
     }
 
     boolean isValidPlacement(Placement placement) {
@@ -53,10 +64,14 @@ public class Board {
                 coordinate.getY() >= 0 && coordinate.getY() < height;
     }
 
-    /**
-     * Undo most recent successfully applied piece placement.
-     */
-    public void undo() {
-        placements.pop();
+    public List<Coordinate> getFreeSlots() {
+        var result = new ArrayList<Coordinate>();
+        for (int x=0 ; x < width ; x++) {
+            for (int y=0 ; y < height ; y++) {
+                result.add(new Coordinate(x, y));
+            }
+        }
+        return result.stream().filter(not(this::overlapsExistingPlacements)).collect(Collectors.toList());
     }
+
 }

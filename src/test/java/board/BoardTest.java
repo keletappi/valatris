@@ -5,11 +5,13 @@ import org.mockito.Mockito;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 public class BoardTest {
+
+    public static final Piece IDENTITY_PIECE = new Piece("IDENTITY", new CoordinateTransformation(0, 0));
 
     @Test
     public void testCoordinateOnBoard() {
@@ -82,9 +84,27 @@ public class BoardTest {
         doReturn(false).when(board).overlapsExistingPlacements(any(Coordinate.class));
 
         assertThat(board.isValidPlacement(new Placement(
-                        new Piece("X", new CoordinateTransformation(0,0)),
+                        IDENTITY_PIECE,
                         new Coordinate(1,1))),
                 is(false));
+    }
 
+
+    @Test
+    public void testGetFreeSlots() {
+        Board board = new Board(3, 3);
+
+        board.apply(new Placement(IDENTITY_PIECE, new Coordinate(1,1)));
+        board.apply(new Placement(IDENTITY_PIECE, new Coordinate(2,1)));
+        board.apply(new Placement(IDENTITY_PIECE, new Coordinate(2,2)));
+
+        assertThat(board.getFreeSlots(), containsInAnyOrder(
+                new Coordinate(0, 0),
+                new Coordinate(0, 1),
+                new Coordinate(0, 2),
+                new Coordinate(1, 0),
+                new Coordinate(1, 2),
+                new Coordinate(2, 0)
+        ));
     }
 }

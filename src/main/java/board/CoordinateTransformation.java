@@ -1,5 +1,6 @@
 package board;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -12,16 +13,8 @@ public final class CoordinateTransformation implements Function<Coordinate, Coor
         this.dY = dY;
     }
 
-    public Coordinate apply(Coordinate absolute) {
+    public Coordinate apply(@Nonnull Coordinate absolute) {
         return new Coordinate(absolute.getX() + dX, absolute.getY() + dY);
-    }
-
-    @Override
-    public String toString() {
-        return "CoordinateTransformation{" +
-                "dX=" + dX +
-                ", dY=" + dY +
-                '}';
     }
 
     @Override
@@ -37,4 +30,13 @@ public final class CoordinateTransformation implements Function<Coordinate, Coor
     public int hashCode() {
         return Objects.hash(dX, dY);
     }
+
+    @Override
+    public String toString() {
+        return "CoordinateTransformation{" +
+                "dX=" + dX +
+                ", dY=" + dY +
+                '}';
+    }
+
 }

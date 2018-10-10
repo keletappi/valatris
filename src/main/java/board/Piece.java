@@ -8,7 +8,7 @@ public class Piece {
     private final String label;
     private final List<CoordinateTransformation> pieceTransformations;
 
-    public Piece(String label, CoordinateTransformation ... pieceTransformations) {
+    public Piece(@Nonnull String label, @Nonnull CoordinateTransformation ... pieceTransformations) {
         this.label = label;
         this.pieceTransformations = List.of(pieceTransformations);
     }

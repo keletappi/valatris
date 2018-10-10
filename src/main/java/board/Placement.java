@@ -1,5 +1,6 @@
 package board;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ public class Placement {
     private final Piece piece;
     private final Coordinate location;
 
-    public Placement(Piece piece, Coordinate location) {
+    public Placement(@Nonnull Piece piece, @Nonnull Coordinate location) {
         this.piece = piece;
         this.location = location;
     }
