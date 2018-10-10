@@ -6,6 +6,9 @@ plugins {
 
 mainClassName = 'ValatrisSolver'
 
+targetCompatibility = 10
+sourceCompatibility = 10
+
 dependencies {
     compile 'com.google.guava:guava:23.0'
 
